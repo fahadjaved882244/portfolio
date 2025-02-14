@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/components/animations.dart';
 import 'package:portfolio/utils/media_query_extension.dart';
 import 'package:portfolio/views/home/components/custom_nav_bar.dart';
 import 'package:portfolio/views/home/components/custom_nav_rail.dart';
+import 'package:portfolio/views/project/projects_view.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -10,64 +12,96 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView>
+    with SingleTickerProviderStateMixin {
   int selectedIndex = 0;
-
   bool wideScreen = false;
+
+  late final _colorScheme = Theme.of(context).colorScheme;
+  late final backgroundColor = Color.alphaBlend(
+    _colorScheme.primary.withOpacity(0.14),
+    _colorScheme.surface,
+  );
+
+  // Animation controller for animating Navigation Bar and Rail
+  bool controllerInitialized = false;
+
+  late final _controller = AnimationController(
+    duration: const Duration(milliseconds: 1000),
+    reverseDuration: const Duration(milliseconds: 1250),
+    value: 0,
+    vsync: this,
+  );
+  late final barAnimation = BarAnimation(parent: _controller);
+  late final railAnimation = RailAnimation(parent: _controller);
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    wideScreen = context.isTablet || context.isDesktop;
+    wideScreen = context.showRail;
+
+    //
+    final AnimationStatus status = _controller.status;
+    if (wideScreen) {
+      if (status != AnimationStatus.forward &&
+          status != AnimationStatus.completed) {
+        _controller.forward();
+      }
+    } else {
+      if (status != AnimationStatus.reverse &&
+          status != AnimationStatus.dismissed) {
+        _controller.reverse();
+      }
+    }
+    if (!controllerInitialized) {
+      controllerInitialized = true;
+      _controller.value = wideScreen ? 1 : 0;
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          if (wideScreen)
-            CustomNavRail(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
-            ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+      body: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            return Stack(
               children: [
-                SizedBox(
-                  width: context.margin,
-                  child: const Placeholder(),
-                ),
-                ConstrainedBox(
-                  constraints: BoxConstraints(
-                    minWidth: context.bodySize,
-                    maxWidth: context.bodySizeMax,
-                  ),
-                  child: ColoredBox(
-                    color: Colors.cyan.shade500,
-                    child: Column(
-                      children: [
-                        Text("${context.width}"),
-                      ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(width: context.margin),
+                    SizedBox(
+                      width: context.bodySize,
+                      child: const Center(child: ProjectsView()),
                     ),
+                    SizedBox(width: context.margin),
+                  ],
+                ),
+                if (wideScreen)
+                  CustomNavRail(
+                    backgroundColor: backgroundColor,
+                    selectedIndex: selectedIndex,
+                    onDestinationSelected: onDestinationSelected,
+                    railAnimation: railAnimation,
                   ),
-                ),
-                SizedBox(
-                  width: context.margin,
-                  child: const Placeholder(),
-                ),
               ],
-            ),
-          ),
-        ],
-      ),
+            );
+          }),
       bottomNavigationBar: wideScreen
           ? null
           : CustomNavBar(
+              backgroundColor: backgroundColor,
               selectedIndex: selectedIndex,
               onDestinationSelected: onDestinationSelected,
+              barAnimation: barAnimation,
             ),
     );
   }
@@ -78,6 +112,7 @@ class _HomeViewState extends State<HomeView> {
     });
   }
 }
+
 
 // class HomeView extends StatelessWidget {
 //   const HomeView({super.key});
