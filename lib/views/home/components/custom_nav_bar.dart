@@ -22,7 +22,7 @@ class CustomNavBar extends StatelessWidget {
       selectedIndex: selectedIndex,
       onDestinationSelected: onDestinationSelected,
       backgroundColor: backgroundColor,
-      destinations: destinations.map((d) {
+      destinations: myDestinations.map((d) {
         return NavigationDestination(
           icon: Icon(d.icon),
           label: d.label,

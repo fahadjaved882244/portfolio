@@ -29,9 +29,9 @@ extension MediaQueryExtension on BuildContext {
     switch (width) {
       case < 600:
         return width - 16 * 2;
-      case >= 600 && < (905 + 72):
+      case >= 600 && < 905:
         return width - (32 * 2);
-      case >= (905 + 72) && < 1240:
+      case >= 905 && < 1240:
         return 840;
       case >= 1240 && < 1440:
         return width - (200 * 2);

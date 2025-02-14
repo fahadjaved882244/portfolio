@@ -33,7 +33,7 @@ class CustomNavRail extends StatelessWidget {
             selectedIndex: selectedIndex,
             onDestinationSelected: onDestinationSelected,
             extended: context.isDesktop,
-            destinations: destinations.map((d) {
+            destinations: myDestinations.map((d) {
               return NavigationRailDestination(
                 icon: Icon(d.icon),
                 label: Text(d.label),

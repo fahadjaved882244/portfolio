@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/components/animations.dart';
 import 'package:portfolio/utils/media_query_extension.dart';
-import 'package:portfolio/views/home/components/custom_nav_bar.dart';
-import 'package:portfolio/views/home/components/custom_nav_rail.dart';
+import 'package:portfolio/views/home/components/custom_drawer.dart';
 import 'package:portfolio/views/project/projects_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,94 +13,32 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView>
     with SingleTickerProviderStateMixin {
   int selectedIndex = 0;
-  bool wideScreen = false;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
-  late final _colorScheme = Theme.of(context).colorScheme;
-  late final backgroundColor = Color.alphaBlend(
-    _colorScheme.primary.withOpacity(0.14),
-    _colorScheme.surface,
-  );
-
-  // Animation controller for animating Navigation Bar and Rail
-  bool controllerInitialized = false;
-
-  late final _controller = AnimationController(
-    duration: const Duration(milliseconds: 1000),
-    reverseDuration: const Duration(milliseconds: 1250),
-    value: 0,
-    vsync: this,
-  );
-  late final barAnimation = BarAnimation(parent: _controller);
-  late final railAnimation = RailAnimation(parent: _controller);
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-
-    wideScreen = context.showRail;
-
-    //
-    final AnimationStatus status = _controller.status;
-    if (wideScreen) {
-      if (status != AnimationStatus.forward &&
-          status != AnimationStatus.completed) {
-        _controller.forward();
-      }
-    } else {
-      if (status != AnimationStatus.reverse &&
-          status != AnimationStatus.dismissed) {
-        _controller.reverse();
-      }
-    }
-    if (!controllerInitialized) {
-      controllerInitialized = true;
-      _controller.value = wideScreen ? 1 : 0;
-    }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
+  void openDrawer() {
+    scaffoldKey.currentState!.openEndDrawer();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AnimatedBuilder(
-          animation: _controller,
-          builder: (context, _) {
-            return Stack(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(width: context.margin),
-                    SizedBox(
-                      width: context.bodySize,
-                      child: const Center(child: ProjectsView()),
-                    ),
-                    SizedBox(width: context.margin),
-                  ],
-                ),
-                if (wideScreen)
-                  CustomNavRail(
-                    backgroundColor: backgroundColor,
-                    selectedIndex: selectedIndex,
-                    onDestinationSelected: onDestinationSelected,
-                    railAnimation: railAnimation,
-                  ),
-              ],
-            );
-          }),
-      bottomNavigationBar: wideScreen
-          ? null
-          : CustomNavBar(
-              backgroundColor: backgroundColor,
-              selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
-              barAnimation: barAnimation,
-            ),
+      key: scaffoldKey,
+      appBar: AppBar(),
+      drawer: CustomDrawer(
+        selectedIndex: selectedIndex,
+        onDestinationSelected: onDestinationSelected,
+      ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(width: context.margin),
+          SizedBox(
+            width: context.bodySize,
+            child: const Center(child: ProjectsView()),
+          ),
+          SizedBox(width: context.margin),
+        ],
+      ),
     );
   }
 

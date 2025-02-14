@@ -6,7 +6,7 @@ class Destination {
   final String label;
 }
 
-const List<Destination> destinations = <Destination>[
+const List<Destination> myDestinations = <Destination>[
   Destination(Icons.inbox_rounded, 'Inbox'),
   Destination(Icons.article_outlined, 'Articles'),
   Destination(Icons.messenger_outline_rounded, 'Messages'),

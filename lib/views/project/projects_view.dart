@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/components/outline_container.dart';
 
 class Project {
   final String name;
@@ -38,9 +37,6 @@ class ProjectsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        const SliverAppBar.large(
-          title: Text("Browse my recent Projects"),
-        ),
         SliverGrid.builder(
           itemCount: myProjects.length,
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
