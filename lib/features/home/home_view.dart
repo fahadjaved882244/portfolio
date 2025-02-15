@@ -8,7 +8,7 @@ class HomeView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       color: Colors.red.shade300,
-      child: Center(
+      child: const Center(
         child: Text("HAHA"),
       ),
     );

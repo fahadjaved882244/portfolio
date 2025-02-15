@@ -18,7 +18,9 @@ class ProjectCard extends StatelessWidget {
             showDialog(
                 context: context,
                 builder: (context) {
-                  final content = ProjectDetailView();
+                  final content = ProjectDetailView(
+                    project: project,
+                  );
                   // show Full Screen Dialog on phone because it can cover the whole
                   // screen.
                   if (context.isPhone) {
@@ -29,18 +31,21 @@ class ProjectCard extends StatelessWidget {
                     return Dialog(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxWidth: 400),
-                        child: ProjectDetailView(),
+                        child: content,
                       ),
                     );
                   }
                 });
           },
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
+              SizedBox(
                 height: constraints.maxHeight * 0.65,
-                color: Colors.cyan.shade400,
+                child: Image.asset(
+                  project.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),

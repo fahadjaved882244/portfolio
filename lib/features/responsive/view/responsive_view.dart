@@ -9,7 +9,7 @@ import 'widgets/custom_nav_bar.dart';
 import 'widgets/custom_nav_rail.dart';
 import 'widgets/responsive_padding.dart';
 
-final widgets = [
+const widgets = [
   HomeView(),
   ProjectView(),
   HomeView(),

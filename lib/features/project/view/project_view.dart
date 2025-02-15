@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/features/project/model/project_model.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:portfolio/features/project/controller/project_controller.dart';
 import 'package:portfolio/features/project/view/widgets/project_card.dart';
 
-class ProjectView extends StatelessWidget {
+class ProjectView extends ConsumerWidget {
   const ProjectView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final myProjects = ref.watch(projectControllerProvider);
+
     return CustomScrollView(
       slivers: [
         SliverAppBar.large(
