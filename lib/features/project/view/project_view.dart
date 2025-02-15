@@ -12,11 +12,14 @@ class ProjectView extends ConsumerWidget {
 
     return CustomScrollView(
       slivers: [
-        SliverAppBar.large(
+        SliverAppBar.medium(
           title: Text(
-            "My recent projects",
-            style: Theme.of(context).textTheme.displayMedium,
+            "Recent projects",
+            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
           ),
+          centerTitle: true,
         ),
         SliverGrid.builder(
           itemCount: myProjects.length,

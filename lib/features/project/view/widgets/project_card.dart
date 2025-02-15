@@ -10,7 +10,8 @@ class ProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card.outlined(
+    return Card(
+      elevation: 4,
       clipBehavior: Clip.antiAlias,
       child: LayoutBuilder(builder: (context, constraints) {
         return InkWell(
@@ -42,9 +43,14 @@ class ProjectCard extends StatelessWidget {
             children: [
               SizedBox(
                 height: constraints.maxHeight * 0.65,
-                child: Image.asset(
-                  project.imageUrl,
-                  fit: BoxFit.cover,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.vertical(
+                    bottom: Radius.circular(16),
+                  ),
+                  child: Image.asset(
+                    project.imageUrl,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               Padding(
