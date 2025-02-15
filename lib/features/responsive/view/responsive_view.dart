@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/features/home/home_view.dart';
 import 'package:portfolio/features/project/view/project_view.dart';
-import 'package:portfolio/features/responsive/controller.dart/responsive_controller.dart';
+import 'package:portfolio/features/responsive/controller/responsive_controller.dart';
 import 'package:portfolio/features/responsive/utils/media_query_extension.dart';
 
-import 'components/custom_nav_bar.dart';
-import 'components/custom_nav_rail.dart';
-import 'components/responsive_padding.dart';
+import 'widgets/custom_nav_bar.dart';
+import 'widgets/custom_nav_rail.dart';
+import 'widgets/responsive_padding.dart';
 
 final widgets = [
   HomeView(),

@@ -12,21 +12,34 @@ final localDbProvider = Provider<LocalDb>((ref) {
   return LocalDb(sharedPrefs);
 });
 
+/// Remeber to override the [sharedPreferencesProvider] in the [runApp] method
+///
+/// void main() async {
+///  WidgetsFlutterBinding.ensureInitialized();
+///
+/// final sharedPreferences = await SharedPreferences.getInstance();
+///
+/// runApp(ProviderScope(
+///    overrides: [
+///      sharedPreferencesProvider.overrideWithValue(sharedPreferences),
+///    ],
+///    child: const MyApp(),
+///  ));
+///
+/// }
+
 class LocalDb {
   final SharedPreferences _box;
   LocalDb(this._box);
 
+  //////////// Dark Mode ////////////////
   static const _darkModeKey = 'isDarkMode';
 
-  /// Load isDarkMode from local storage and if it's empty, returns true (that means default theme is dark)
-  bool get isDarkMode => _box.getBool(_darkModeKey) ?? false;
+  bool get darkMode => _box.getBool(_darkModeKey) ?? false;
 
-  /// Save to local storage
-  set isDarkMode(bool flag) => _box.setBool(_darkModeKey, flag);
+  set darkMode(bool flag) => _box.setBool(_darkModeKey, flag);
 
-  //////////////////////////
-  ///////// Locale /////////
-  /////////////////////////
+  ///////////// Locale ///////////////////
   static const _languageKey = 'locale_language';
   static const _countryKey = 'locale_country';
 
@@ -35,8 +48,7 @@ class LocalDb {
         _box.getString(_countryKey),
       );
 
-  /// Save locale to local storage
-  void saveLanguageCode(Locale locale) {
+  set locale(Locale locale) {
     _box.setString(_languageKey, locale.languageCode);
     if (locale.countryCode != null) {
       _box.setString(_countryKey, locale.countryCode!);

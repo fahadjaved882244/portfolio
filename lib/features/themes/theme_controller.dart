@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:portfolio/features/local_db/local_db.dart';
+import 'package:portfolio/data/local_db.dart';
 
 final themeControllerProvider =
     StateNotifierProvider<ThemeController, ThemeMode>((ref) {
@@ -19,10 +19,10 @@ class ThemeController extends StateNotifier<ThemeMode> {
   void toggleThemeMode() {
     if (brightness == Brightness.light) {
       state = ThemeMode.dark;
-      _localDb.isDarkMode = true;
+      _localDb.darkMode = true;
     } else {
       state = ThemeMode.light;
-      _localDb.isDarkMode = false;
+      _localDb.darkMode = false;
     }
   }
 

@@ -1,6 +1,6 @@
 # Portfolio Website - Flutter
 
-Welcome to the repository for my **Portfolio Website** built using **Flutter**. This project showcases my skills, experience, and projects in a clean, responsive, and visually appealing manner. The website is designed to be fully responsive, ensuring a seamless experience across devices, including mobile, tablet, and desktop.
+Welcome to the repository for my **Portfolio Website** built using **Flutter** and **Microsoft Azure**. This project showcases my skills, experience, and projects in a clean, responsive, and visually appealing manner. The website is designed to be fully responsive, ensuring a seamless experience across devices, including mobile, tablet, and desktop.
 
 ---
 
@@ -13,9 +13,8 @@ Welcome to the repository for my **Portfolio Website** built using **Flutter**. 
 5. [Setup and Installation](#setup-and-installation)
 6. [Running the Project](#running-the-project)
 7. [Deployment](#deployment)
-8. [Contributing](#contributing)
-9. [License](#license)
-10. [Contact](#contact)
+8. [License](#license)
+9. [Contact](#contact)
 
 ---
 
@@ -25,7 +24,7 @@ This portfolio website is a **Flutter web application** designed to showcase my 
 
 - **Home**: A brief introduction about me.
 - **About**: Detailed information about my background, skills, and experience.
-- **Projects**: A showcase of my recent projects with descriptions, technologies used, and links to live demos or repositories.
+- **Projects**: A showcase of my recent projects with descriptions and links to live demos.
 - **Contact**: A form to get in touch with me.
 
 The website adheres to **Material Design principles** and is optimized for performance, accessibility, and responsiveness.
@@ -35,22 +34,39 @@ The website adheres to **Material Design principles** and is optimized for perfo
 ## Features
 
 - **Responsive Design**: The website adapts seamlessly to different screen sizes, including mobile, tablet, and desktop.
-- **Dark Mode Support**: Includes a toggle for light and dark themes.
 - **Interactive UI**: Smooth animations and transitions for an engaging user experience.
-- **Project Showcase**: Detailed project cards with images, descriptions, and links.
-- **Contact Form**: A functional form to send messages directly to my email.
-- **SEO Optimization**: Basic SEO practices implemented for better visibility on search engines.
+- **Dark Mode Support**: Includes a toggle for light and dark themes.
+- **Deep Linking**: Enables navigation directly to specific pages via URLs.
+- **Azure DevOps**: Configured a CI/CD pipeline using Azure DevOps service.
+- **Azure Hosting**: Deployment and hosting on Azure cloud infrastructure.
 
 ---
 
 ## Technologies Used
 
-- **Flutter**: The primary framework used for building the web application.
-- **Dart**: The programming language used for Flutter development.
-- **Firebase**: Used for hosting and backend services (e.g., contact form submissions).
-- **Responsive Framework**: Ensures the website is fully responsive across devices.
-- **Material Design**: Follows Google's Material Design guidelines for a consistent and modern UI.
-- **Git**: Version control for managing the codebase.
+| SDLC Phase      | Technologies Used |
+|---------------|-----------------|
+| **Planning**   | Trello |
+| **Design**     | Material 3 |
+| **Development** | Flutter, Riverpod, GoRouter  |
+| **Database** | Azure Cosmo Db  |
+| **Testing**    | Unit Testing, Widget Testing |
+| **Deployment** | Azure Static Web Apps  |
+| **CI/CD** | Azure DevOps |
+
+### Explanation of Technologies
+
+- **Trello**: A Kanban project management tool used for task tracking and collaboration.
+- **Material 3**: The latest design system by Google, providing modern UI components and themes.
+- **Flutter**: A UI toolkit for building natively compiled applications across multiple platforms from a single codebase.
+- **Riverpod**: A declarative and compile safe state management library, offering improved performance and testability. 
+- **GoRouter**: A declarative routing package for managing navigation in Flutter applications.
+- **Azure Cosmo DB**: A globally distributed, NoSQL database service optimized for scalability and performance.
+- **Unit Testing**: A methodology for testing individual components of the application to ensure correctness.
+- **Widget Testing**: A testing framework for verifying UI components and interactions in Flutter applications.
+- **Azure Static Web Apps**: A cloud service for deploying and hosting static applications with automated scaling.
+- **Azure DevOps**: A suite of development tools for version control, CI/CD pipelines, and project management.
+
 
 ---
 
@@ -58,21 +74,35 @@ The website adheres to **Material Design principles** and is optimized for perfo
 
 The project is organized as follows:
 
-lib/
-├── main.dart # Entry point of the application
-├── constants/ # Constants like colors, strings, and styles
-├── models/ # Data models (e.g., Project, Skill)
-├── screens/ # All the screens/pages of the app
-│ ├── home_screen.dart # Home screen
-│ ├── about_screen.dart # About screen
-│ ├── projects_screen.dart # Projects screen
-│ └── contact_screen.dart # Contact screen
-├── widgets/ # Reusable UI components
-│ ├── app_bar.dart # Custom app bar
-│ ├── project_card.dart # Project card widget
-│ └── theme_toggle.dart # Dark/light theme toggle
-├── services/ # Backend services (e.g., Firebase integration)
-└── utils/ # Utility functions and helpers
+## Project Structure
+
+This Flutter project follows a **Feature-First** approach combined with the **MVC (Model-View-Controller) architecture** to ensure modularity, scalability, and maintainability. Below is the directory structure:
+
+```
+project_root/
+│── lib/
+│   │   
+│   │── core/			# Contains global utilities, constants, and shared services
+│   │   
+│   │── data/			# Handles data sources (APIs, local storage, etc.)
+│   │   
+│   │── features/		# Organizes code by feature
+│   │   │── feature_name/
+│   │   │   │── controller/	# Business logic and state management
+│   │   │   │── model/		   # Data structures and domain models
+│   │   │   │── view/		   # UI components and widgets
+│   │   │       │── widgets/        # Reusable widgets specific to the feature
+│   │   │       │── view.dart       # UI code of the specific feature
+│   │   │
+│   │── routes/      # Handles app navigation
+│   │── main.dart    # Application entry point
+│
+│── assets/			# Contains images, fonts, and other static resources
+│── pubspec.yaml	# Dependencies and project metadata
+│── README.md		# Project documentation
+```
+
+Each feature within the `features/` directory is self-contained, following the MVC pattern to maintain a clean separation of concerns.
 
 
 ---
@@ -95,12 +125,29 @@ Follow these steps to set up the project locally:
    cd portfolio
 
 2. **Install Dependencies**:
-```bash
-flutter pub get
+   ```bash
+   flutter pub get
 
 3. **Run the Project**:
-```bash
-flutter run -d chrome
+   ```bash
+   flutter run -d chrome
+
+## License
+
+This project is licensed under the MIT License. See the LICENSE file for details.
 
 ---
 
+## Contact
+
+If you have any questions or feedback, feel free to reach out:
+
+- **Email**: fahadjaved882244@gmail.com
+
+- **LinkedIn**: [linkedin.com/fahadjaved882244](https://www.linkedin.com/in/fahadjaved882244/)
+
+- **GitHub**: [github.com/fahadjaved882244](https://github.com/fahadjaved882244)
+
+---
+
+Thank you for visiting my portfolio website repository! 🚀

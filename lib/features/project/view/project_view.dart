@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/features/project/model/project_model.dart';
-import 'package:portfolio/features/project/view/components/project_card.dart';
+import 'package:portfolio/features/project/view/widgets/project_card.dart';
 
 class ProjectView extends StatelessWidget {
   const ProjectView({super.key});

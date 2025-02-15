@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/features/project/model/project_model.dart';
-import 'package:portfolio/features/project/view/components/project_detail_dialog.dart';
+import 'package:portfolio/features/project/view/project_detail_view.dart';
 import 'package:portfolio/features/responsive/utils/media_query_extension.dart';
 
 class ProjectCard extends StatelessWidget {

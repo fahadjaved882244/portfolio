@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:portfolio/features/local_db/local_db.dart';
-import 'package:portfolio/features/responsive/controller.dart/responsive_controller.dart';
+import 'package:portfolio/data/local_db.dart';
+import 'package:portfolio/features/responsive/controller/responsive_controller.dart';
 import 'package:portfolio/features/responsive/view/responsive_view.dart';
 import 'package:portfolio/features/themes/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
