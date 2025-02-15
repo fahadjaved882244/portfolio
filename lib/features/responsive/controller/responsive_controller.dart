@@ -19,10 +19,10 @@ class ResponsiveIndexNotifier extends Notifier<int> {
       return Colors.red;
     }
     if (state == 1) {
-      return Colors.deepPurple;
+      return Colors.green;
     }
     if (state == 2) {
-      return Colors.green;
+      return Colors.deepPurple;
     }
     if (state == 3) {
       return Colors.deepOrange;

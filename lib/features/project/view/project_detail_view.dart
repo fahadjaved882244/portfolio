@@ -1,116 +1,159 @@
 import 'package:flutter/material.dart';
+import 'package:portfolio/features/project/model/project_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProjectDetailView extends StatelessWidget {
+  final Project project;
+
+  const ProjectDetailView({super.key, required this.project});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Project Details'),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Project Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: Image.network(
-                'https://via.placeholder.com/800x400', // Replace with your project image URL
-                height: 200,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(bottom: Radius.circular(24)),
+                  child: Image.asset(
+                    project.coverUrl,
+                    height: 400,
+                    width: double.infinity,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Positioned(
+                  top: 16,
+                  left: 16,
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                    child: IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 24),
+            const SizedBox(height: 24),
 
             // Project Title
-            Text(
-              'E-Commerce Platform for GreenTech Solutions',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    project.name,
+                    style: Theme.of(context).textTheme.headlineLarge,
+                  ),
 
-            // Company Name
-            Text(
-              'Developed for: GreenTech Solutions Inc.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-            ),
-            SizedBox(height: 24),
+                  // Company Name
+                  Text(
+                    'Developed for: ${project.company}',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 4),
 
-            // Project Description
-            Text(
-              'Project Description',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Text(
-              'GreenTech Solutions is a leading provider of eco-friendly products. This project involved building a fully responsive e-commerce platform to showcase their products, manage inventory, and process orders seamlessly. The platform was designed to provide an intuitive user experience while ensuring high performance and scalability.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[800],
-              ),
-            ),
-            SizedBox(height: 24),
+                  // Project Description
+                  Text(
+                    project.description,
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
 
-            // Key Contributions
-            Text(
-              'Key Contributions',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 8),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildContributionItem(
-                    'Designed and implemented the user interface using Flutter.'),
-                _buildContributionItem(
-                    'Integrated RESTful APIs for product listing, cart management, and order processing.'),
-                _buildContributionItem(
-                    'Optimized the platform for performance, reducing load times by 30%.'),
-                _buildContributionItem(
-                    'Implemented secure payment gateways for seamless transactions.'),
-                _buildContributionItem(
-                    'Collaborated with the backend team to ensure smooth data flow and synchronization.'),
-              ],
-            ),
-            SizedBox(height: 24),
+                  // Technologies Used
+                  Text(
+                    'Technologies Used',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: project.tools
+                        .map((tool) => _buildTechnologyChip(tool))
+                        .toList(),
+                  ),
+                  const SizedBox(height: 16),
 
-            // Technologies Used
-            Text(
-              'Technologies Used',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+                  // Key Contributions
+                  Text(
+                    'Key Contributions',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  ...project.contributions.map((c) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        "⭐ $c",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: 16),
+
+                  // Key Contributions
+                  Text(
+                    'Challenges Faced',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  ...project.challenges.map((c) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(
+                        "⭐ $c",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: 24),
+
+                  // Project Link
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FilledButton.tonalIcon(
+                        onPressed: () async {
+                          // Open Project Link
+                          try {
+                            final uri = Uri.parse(project.downloadUrl);
+                            if (await canLaunchUrl(uri)) {
+                              launchUrl(uri);
+                            }
+                          } catch (e) {
+                            print('Error: $e');
+                          }
+                        },
+                        label: const Text('View Project'),
+                        icon: const Icon(Icons.open_in_new),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
+                ],
               ),
-            ),
-            SizedBox(height: 8),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: [
-                _buildTechnologyChip('Flutter'),
-                _buildTechnologyChip('Dart'),
-                _buildTechnologyChip('Firebase'),
-                _buildTechnologyChip('REST APIs'),
-                _buildTechnologyChip('Node.js'),
-                _buildTechnologyChip('MongoDB'),
-                _buildTechnologyChip('Stripe'),
-                _buildTechnologyChip('AWS S3'),
-              ],
             ),
           ],
         ),
@@ -118,37 +161,10 @@ class ProjectDetailView extends StatelessWidget {
     );
   }
 
-  // Helper method to build contribution items
-  Widget _buildContributionItem(String text) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(Icons.circle, size: 8, color: Colors.blue),
-          SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[800],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   // Helper method to build technology chips
   Widget _buildTechnologyChip(String technology) {
     return Chip(
-      label: Text(
-        technology,
-        style: TextStyle(color: Colors.white),
-      ),
-      backgroundColor: Colors.blue,
+      label: Text(technology),
     );
   }
 }

@@ -7,8 +7,8 @@ class Destination {
 }
 
 const List<Destination> myDestinations = <Destination>[
-  Destination(Icons.inbox_rounded, 'Inbox'),
-  Destination(Icons.article_outlined, 'Articles'),
-  Destination(Icons.messenger_outline_rounded, 'Messages'),
-  Destination(Icons.group_outlined, 'Groups'),
+  Destination(Icons.account_circle_outlined, 'Profile'),
+  Destination(Icons.code, 'Projects'),
+  Destination(Icons.timeline, 'Experience'),
+  Destination(Icons.email_outlined, 'Contact'),
 ];

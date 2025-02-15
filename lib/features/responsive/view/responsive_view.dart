@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:portfolio/features/experience/view/exprience_list_view.dart';
 import 'package:portfolio/features/home/home_view.dart';
-import 'package:portfolio/features/project/view/project_view.dart';
+import 'package:portfolio/features/project/view/project_list_view.dart';
 import 'package:portfolio/features/responsive/controller/responsive_controller.dart';
 import 'package:portfolio/features/responsive/utils/media_query_extension.dart';
 
@@ -9,10 +11,10 @@ import 'widgets/custom_nav_bar.dart';
 import 'widgets/custom_nav_rail.dart';
 import 'widgets/responsive_padding.dart';
 
-final widgets = [
+const widgets = [
   HomeView(),
-  ProjectView(),
-  HomeView(),
+  ProjectListView(),
+  ExperienceListView(),
   HomeView(),
 ];
 
@@ -22,6 +24,17 @@ class ResponsiveView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final selectedIndex = ref.watch(responsiveIndexProvider);
+    final pageController = usePageController(initialPage: selectedIndex);
+
+    useEffect(() {
+      if (pageController.hasClients) {
+        pageController.animateToPage(
+          selectedIndex,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+        );
+      }
+    }, [selectedIndex]);
 
     return Scaffold(
       body: SafeArea(
@@ -33,11 +46,17 @@ class ResponsiveView extends HookConsumerWidget {
                 onDestinationSelected: (i) => onDestinationSelected(i, ref),
               ),
             Expanded(
-              child: ResponsivePadding(
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 400),
-                  child: widgets[selectedIndex],
-                ),
+              child: PageView.builder(
+                pageSnapping: false,
+                controller: pageController,
+                scrollDirection: Axis.vertical,
+                itemCount: widgets.length,
+                itemBuilder: (context, i) {
+                  return ResponsivePadding(
+                    child: widgets[i],
+                  );
+                },
+                onPageChanged: (i) => onDestinationSelected(i, ref),
               ),
             ),
           ],
