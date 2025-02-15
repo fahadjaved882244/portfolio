@@ -1,4 +1,5 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
 
 class Project {
   final String name;
@@ -14,6 +15,72 @@ class Project {
     required this.imageUrl,
     required this.downloadUrl,
   });
+
+  Project copyWith({
+    String? name,
+    String? company,
+    String? description,
+    String? imageUrl,
+    String? downloadUrl,
+  }) {
+    return Project(
+      name: name ?? this.name,
+      company: company ?? this.company,
+      description: description ?? this.description,
+      imageUrl: imageUrl ?? this.imageUrl,
+      downloadUrl: downloadUrl ?? this.downloadUrl,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'company': company,
+      'description': description,
+      'imageUrl': imageUrl,
+      'downloadUrl': downloadUrl,
+    };
+  }
+
+  factory Project.fromMap(Map<String, dynamic> map) {
+    return Project(
+      name: map['name'] as String,
+      company: map['company'] as String,
+      description: map['description'] as String,
+      imageUrl: map['imageUrl'] as String,
+      downloadUrl: map['downloadUrl'] as String,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Project.fromJson(String source) =>
+      Project.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Project(name: $name, company: $company, description: $description, imageUrl: $imageUrl, downloadUrl: $downloadUrl)';
+  }
+
+  @override
+  bool operator ==(covariant Project other) {
+    if (identical(this, other)) return true;
+
+    return other.name == name &&
+        other.company == company &&
+        other.description == description &&
+        other.imageUrl == imageUrl &&
+        other.downloadUrl == downloadUrl;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode ^
+        company.hashCode ^
+        description.hashCode ^
+        imageUrl.hashCode ^
+        downloadUrl.hashCode;
+  }
 }
 
 final myProjects = [
@@ -66,63 +133,3 @@ final myProjects = [
     downloadUrl: "",
   ),
 ];
-
-class ProjectsView extends StatelessWidget {
-  const ProjectsView({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverGrid.builder(
-          itemCount: myProjects.length,
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 317,
-            childAspectRatio: 0.60,
-          ),
-          itemBuilder: (context, i) {
-            final project = myProjects[i];
-            return Card(
-              clipBehavior: Clip.antiAlias,
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: constraints.maxHeight * 0.65,
-                      color: Colors.cyan.shade400,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            project.name,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          Text(
-                            project.company,
-                            style: Theme.of(context).textTheme.titleSmall,
-                          ),
-                          const SizedBox(height: 4),
-                          Text(
-                            project.description,
-                            style: Theme.of(context).textTheme.labelMedium,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                );
-              }),
-            );
-          },
-        ),
-      ],
-    );
-  }
-}

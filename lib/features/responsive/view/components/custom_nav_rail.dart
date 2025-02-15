@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/views/home/components/destination.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:portfolio/features/responsive/model/destination.dart';
+import 'package:portfolio/features/themes/theme_controller.dart';
 
-class CustomNavRail extends StatelessWidget {
+class CustomNavRail extends ConsumerWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
   final Color? backgroundColor;
@@ -14,7 +16,7 @@ class CustomNavRail extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SizedBox(
       width: 72,
       child: NavigationRail(
@@ -28,6 +30,18 @@ class CustomNavRail extends StatelessWidget {
             label: Text(d.label),
           );
         }).toList(),
+        trailing: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const SizedBox(),
+            IconButton(
+              onPressed: () {
+                ref.read(themeControllerProvider.notifier).toggleThemeMode();
+              },
+              icon: const Icon(Icons.wb_sunny_outlined),
+            ),
+          ],
+        ),
       ),
     );
   }

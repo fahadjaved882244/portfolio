@@ -1,40 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/utils/media_query_extension.dart';
-import 'package:portfolio/views/home/components/custom_nav_bar.dart';
-import 'package:portfolio/views/home/components/custom_nav_rail.dart';
-import 'package:portfolio/views/project/projects_view.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:portfolio/features/home/home_view.dart';
+import 'package:portfolio/features/project/view/project_view.dart';
+import 'package:portfolio/features/responsive/controller.dart/responsive_controller.dart';
+import 'package:portfolio/features/responsive/utils/media_query_extension.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+import 'components/custom_nav_bar.dart';
+import 'components/custom_nav_rail.dart';
+import 'components/responsive_padding.dart';
+
+final widgets = [
+  HomeView(),
+  ProjectView(),
+  HomeView(),
+  HomeView(),
+];
+
+class ResponsiveView extends HookConsumerWidget {
+  const ResponsiveView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(responsiveIndexProvider);
 
-class _HomeViewState extends State<HomeView> {
-  int selectedIndex = 0;
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("Fahad Javed"),
-      // ),
-      // drawer: CustomDrawer(
-      //   selectedIndex: selectedIndex,
-      //   onDestinationSelected: onDestinationSelected,
-      // ),
       body: SafeArea(
         child: Row(
           children: [
             if (context.showRail)
               CustomNavRail(
                 selectedIndex: selectedIndex,
-                onDestinationSelected: onDestinationSelected,
+                onDestinationSelected: (i) => onDestinationSelected(i, ref),
               ),
-            const Expanded(
+            Expanded(
               child: ResponsivePadding(
-                child: ProjectsView(),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 400),
+                  child: widgets[selectedIndex],
+                ),
               ),
             ),
           ],
@@ -43,79 +46,18 @@ class _HomeViewState extends State<HomeView> {
       bottomNavigationBar: !context.showRail
           ? CustomNavBar(
               selectedIndex: selectedIndex,
-              onDestinationSelected: onDestinationSelected,
+              onDestinationSelected: (i) => onDestinationSelected(i, ref),
             )
           : null,
     );
   }
 
-  void onDestinationSelected(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
+  void onDestinationSelected(int i, WidgetRef ref) {
+    ref.read(responsiveIndexProvider.notifier).index = i;
   }
 }
 
-class ResponsivePadding extends StatelessWidget {
-  final Widget child;
-  const ResponsivePadding({
-    super.key,
-    required this.child,
-  });
 
-  @override
-  Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(width: margin(constraints.maxWidth)),
-            SizedBox(
-              width: bodySize(constraints.maxWidth),
-              child: Center(child: child),
-            ),
-            SizedBox(width: margin(constraints.maxWidth)),
-          ],
-        );
-      },
-    );
-  }
-
-  double margin(double width) {
-    switch (width) {
-      case < 600:
-        return 16;
-      case >= 600 && < 905:
-        return 32;
-      case >= 905 && < 1240:
-        return (width - 840) / 2;
-      case >= 1240 && < 1440:
-        return 200;
-      case >= 1440:
-        return (width - 1040) / 2;
-      default:
-        return 16;
-    }
-  }
-
-  double bodySize(double width) {
-    switch (width) {
-      case < 600:
-        return width - 16 * 2;
-      case >= 600 && < 905:
-        return width - (32 * 2);
-      case >= 905 && < 1240:
-        return 840;
-      case >= 1240 && < 1440:
-        return width - (200 * 2);
-      case >= 1440:
-        return 1040;
-      default:
-        return 16;
-    }
-  }
-}
 
 
 // class HomeView extends StatelessWidget {

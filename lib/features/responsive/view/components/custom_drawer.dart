@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:portfolio/views/home/components/destination.dart';
+import 'package:portfolio/features/responsive/model/destination.dart';
 
 class CustomDrawer extends StatelessWidget {
   final int selectedIndex;
