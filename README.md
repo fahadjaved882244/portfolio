@@ -91,9 +91,16 @@ Follow these steps to set up the project locally:
 
 1. **Clone the Repository**:
    ```bash
-   git clone https://github.com/your-username/portfolio-website-flutter.git
-   cd portfolio-website-flutter
+   git clone https://github.com/fahadjaved882244/portfolio.git
+   cd portfolio
 
-### Install Dependencies
-
+2. **Install Dependencies**:
+```bash
 flutter pub get
+
+3. **Run the Project**:
+```bash
+flutter run -d chrome
+
+---
+
