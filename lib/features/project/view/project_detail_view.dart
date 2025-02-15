@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:portfolio/features/project/model/project_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProjectDetailView extends StatelessWidget {
   final Project project;
@@ -125,6 +126,32 @@ class ProjectDetailView extends StatelessWidget {
                       ),
                     );
                   }),
+                  const SizedBox(height: 24),
+
+                  // Project Link
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      FilledButton.tonalIcon(
+                        onPressed: () async {
+                          // Open Project Link
+                          try {
+                            final uri = Uri.parse(project.downloadUrl);
+                            if (await canLaunchUrl(uri)) {
+                              launchUrl(uri);
+                            }
+                          } catch (e) {
+                            print('Error: $e');
+                          }
+                        },
+                        label: const Text('View Project'),
+                        icon: const Icon(Icons.open_in_new),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

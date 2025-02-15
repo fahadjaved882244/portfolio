@@ -20,7 +20,7 @@ class CustomNavRail extends ConsumerWidget {
     return SizedBox(
       width: 72,
       child: NavigationRail(
-        backgroundColor: backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.surfaceContainer,
         groupAlignment: 0.0,
         selectedIndex: selectedIndex,
         onDestinationSelected: onDestinationSelected,

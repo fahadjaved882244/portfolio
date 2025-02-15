@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:portfolio/core/app_strings.dart';
+import 'package:portfolio/features/home/widgets/skills_table.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -25,7 +27,7 @@ class HomeView extends ConsumerWidget {
 
               // Name
               Text(
-                'Fahad Javed', // Replace with your name
+                AppStrings.myName,
                 style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -34,7 +36,7 @@ class HomeView extends ConsumerWidget {
 
               // Expertise
               Text(
-                "Flutter Developer | 5+ Years | Master's in Software Engineering", // Replace with your expertise
+                AppStrings.myTags,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -44,66 +46,33 @@ class HomeView extends ConsumerWidget {
 
               // Introduction
               Text(
-                "Hi! I'm a Senior Flutter developer. Over the years, I've helped brands and businesses build high-performance cross-platform applications, driving business growth through technology. I've worked in multiple product-based companies and was a Lead Mobile Developer at Exacology.",
+                AppStrings.mySummary,
                 style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 24),
 
-              // Technical Skills Card
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Technical Skills',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '• Flutter & Dart\n• RESTful APIs\n• Firebase\n• State Management (Provider, Riverpod)\n• Git & Version Control\n• UI/UX Design',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  "flutter_logo.png",
+                  "firebase_logo.png",
+                  "azure_logo.png",
+                  "python_logo.png"
+                ]
+                    .map((logo) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8),
+                          child: Image.asset(
+                            'assets/skills/$logo',
+                            width: 48,
+                            height: 48,
+                          ),
+                        ))
+                    .toList(),
               ),
-              const SizedBox(height: 24),
+              const SizedBox(height: 32),
 
-              // Interpersonal Skills Card
-              Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Interpersonal Skills',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        '• Team Collaboration\n• Problem Solving\n• Communication\n• Leadership\n• Time Management\n• Adaptability',
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const SkillsTable(),
             ],
           ),
         ),

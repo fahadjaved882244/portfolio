@@ -132,8 +132,8 @@ final jsonProjects = [
     "downloadUrl": "",
     "contributions": [
       "Built a CRM system using React JS to manage customer interactions and orders efficiently.",
-      "An admin panel using React JS for vendors to oversee listings, orders, and inventory",
-      "Developed the  barcode scanning feature for instant halal verification.",
+      "An admin panel using React JS for vendors to oversee listings, orders, and inventory.",
+      "Developed the barcode scanning feature for instant halal verification.",
       "Architected the real-time location-based search functionality using Google Maps, enabling users to find nearby halal vendors."
     ],
     "challenges": [
