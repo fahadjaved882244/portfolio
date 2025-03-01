@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/data/local_db.dart';
-import 'package:portfolio/features/responsive/controller/responsive_controller.dart';
 import 'package:portfolio/features/responsive/view/responsive_view.dart';
-import 'package:portfolio/features/themes/theme_controller.dart';
+import 'package:portfolio/theme/theme_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
@@ -26,10 +25,7 @@ class MyApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.watch(themeControllerProvider);
-    ref.watch(responsiveIndexProvider);
-
     final brightness = ref.read(themeControllerProvider.notifier).brightness;
-    final seedColor = ref.read(responsiveIndexProvider.notifier).themeSeedColor;
 
     return MaterialApp(
       title: 'Flutter Demo',
@@ -37,7 +33,7 @@ class MyApp extends ConsumerWidget {
         brightness: brightness,
         colorScheme: ColorScheme.fromSeed(
           brightness: brightness,
-          seedColor: seedColor,
+          seedColor: Colors.green,
         ),
         useMaterial3: true,
       ),
