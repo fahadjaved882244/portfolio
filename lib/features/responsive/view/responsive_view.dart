@@ -34,6 +34,7 @@ class ResponsiveView extends HookConsumerWidget {
           curve: Curves.easeInOut,
         );
       }
+      return null;
     }, [selectedIndex]);
 
     return Scaffold(
