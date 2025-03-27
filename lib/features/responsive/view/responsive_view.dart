@@ -54,7 +54,6 @@ class ResponsiveView extends HookConsumerWidget {
                   if (not is ScrollEndNotification) {
                     if (pageController.page?.toInt() != null &&
                         selectedIndex.value != pageController.page!.toInt()) {
-                      print("HAHA");
                       selectedIndex.value = pageController.page!.toInt();
                     }
                   }
@@ -93,9 +92,6 @@ class ResponsiveView extends HookConsumerWidget {
     );
   }
 }
-
-
-
 
 // class HomeView extends StatelessWidget {
 //   const HomeView({super.key});
