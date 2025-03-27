@@ -9,6 +9,8 @@ class ExperienceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const snackBar = SnackBar(content: Text("Requested URL not found!"));
+
     return ListTile(
       onTap: () async {
         try {
@@ -17,7 +19,9 @@ class ExperienceCard extends StatelessWidget {
             launchUrl(uri);
           }
         } catch (e) {
-          print(e);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          }
         }
       },
       isThreeLine: true,

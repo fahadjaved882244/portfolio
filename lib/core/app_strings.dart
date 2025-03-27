@@ -16,7 +16,7 @@ class AppStrings {
 
   // Experience
   static const String experienceTitle = 'Experience';
-  static const String experienceTags = 'Product Base | Start Ups | Freelance';
+  static const String experienceTags = 'Product Base | Startups | Freelance';
   static const String experienceSummary =
-      "As the Lead Mobile Developer at Exacology, I was responsible for architecting, designing, and implementing a Dating App in a dynamic startup environment. In addition, I actively recruited and mentored junior developers. Previously at Ng Technologies, I worked on an E-commerce platform, where I contributed to the development of CRM and mobile applications for both customers and suppliers.";
+      "As the Lead Mobile Application Developer at Exacology, a non-profit mental health startup, I was responsible for architecting, designing, and implementing a platform for connecting like-minded individuals using psychometric science.\nAt Ng Solutions, I worked on an E-commerce platform, where I contributed to the development of mobile applications for both customers and suppliers.";
 }

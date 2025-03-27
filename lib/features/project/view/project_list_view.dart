@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/core/app_strings.dart';
 import 'package:portfolio/features/project/controller/project_controller.dart';
+import 'package:portfolio/features/project/model/project_model.dart';
 import 'package:portfolio/features/project/view/widgets/project_card.dart';
 
 class ProjectListView extends ConsumerWidget {
@@ -9,7 +10,7 @@ class ProjectListView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final myProjects = ref.watch(projectControllerProvider);
+    final asyncProjects = ref.watch(projectControllerProvider);
 
     return Column(
       children: [
@@ -34,22 +35,32 @@ class ProjectListView extends ConsumerWidget {
         const SizedBox(height: 24),
 
         Expanded(
-          child: GridView.builder(
-            padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),
-            itemCount: myProjects.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 317,
-              childAspectRatio: 0.60,
-            ),
-            itemBuilder: (context, i) {
-              final project = myProjects[i];
-              return ProjectCard(
-                project: project,
-              );
-            },
-          ),
+          child: buildBody(asyncProjects),
         ),
       ],
+    );
+  }
+
+  Widget buildBody(AsyncValue<List<Project>> asyncValue) {
+    return asyncValue.when<Widget>(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (_, __) => const Center(
+        child: Text("Unexpected Error! Please try agin later."),
+      ),
+      data: (projects) => GridView.builder(
+        padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),
+        itemCount: projects.length,
+        gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 317,
+          childAspectRatio: 0.60,
+        ),
+        itemBuilder: (context, i) {
+          final project = projects[i];
+          return ProjectCard(
+            project: project,
+          );
+        },
+      ),
     );
   }
 }

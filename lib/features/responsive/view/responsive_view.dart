@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:portfolio/features/contact/contact_view.dart';
 import 'package:portfolio/features/experience/view/exprience_list_view.dart';
 import 'package:portfolio/features/home/home_view.dart';
 import 'package:portfolio/features/project/view/project_list_view.dart';
-import 'package:portfolio/features/responsive/controller/responsive_controller.dart';
 import 'package:portfolio/features/responsive/utils/media_query_extension.dart';
 
 import 'widgets/custom_nav_bar.dart';
@@ -15,7 +15,7 @@ const widgets = [
   HomeView(),
   ProjectListView(),
   ExperienceListView(),
-  HomeView(),
+  ContactView(),
 ];
 
 class ResponsiveView extends HookConsumerWidget {
@@ -23,18 +23,21 @@ class ResponsiveView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final selectedIndex = ref.watch(responsiveIndexProvider);
-    final pageController = usePageController(initialPage: selectedIndex);
+    final selectedIndex = useState(0);
+    final pageController = usePageController(initialPage: 0);
 
     useEffect(() {
       if (pageController.hasClients) {
-        pageController.animateToPage(
-          selectedIndex,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
+        pageController
+            .animateToPage(
+              selectedIndex.value,
+              duration: const Duration(milliseconds: 350),
+              curve: Curves.easeInOut,
+            )
+            .then((v) {});
       }
-    }, [selectedIndex]);
+      return;
+    }, [selectedIndex.value]);
 
     return Scaffold(
       body: SafeArea(
@@ -42,21 +45,39 @@ class ResponsiveView extends HookConsumerWidget {
           children: [
             if (context.showRail)
               CustomNavRail(
-                selectedIndex: selectedIndex,
-                onDestinationSelected: (i) => onDestinationSelected(i, ref),
+                selectedIndex: selectedIndex.value,
+                onDestinationSelected: (i) => selectedIndex.value = i,
               ),
             Expanded(
-              child: PageView.builder(
-                pageSnapping: false,
-                controller: pageController,
-                scrollDirection: Axis.vertical,
-                itemCount: widgets.length,
-                itemBuilder: (context, i) {
-                  return ResponsivePadding(
-                    child: widgets[i],
-                  );
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (not) {
+                  if (not is ScrollEndNotification) {
+                    if (pageController.page?.toInt() != null &&
+                        selectedIndex.value != pageController.page!.toInt()) {
+                      selectedIndex.value = pageController.page!.toInt();
+                    }
+                  }
+                  return true;
                 },
-                onPageChanged: (i) => onDestinationSelected(i, ref),
+                child: PageView.builder(
+                  pageSnapping: true,
+                  controller: pageController,
+                  scrollDirection: Axis.vertical,
+                  itemCount: widgets.length,
+                  itemBuilder: (context, i) {
+                    return ResponsivePadding(
+                      child: widgets[i],
+                    );
+                  },
+                  onPageChanged: (i) {
+                    // if ((selectedIndex.value - i).abs() == 1) {
+                    //   selectedIndex.value = i;
+                    // }
+                    // if (!pageController.position.isScrollingNotifier.value) {
+                    //   selectedIndex.value = i;
+                    // }
+                  },
+                ),
               ),
             ),
           ],
@@ -64,20 +85,13 @@ class ResponsiveView extends HookConsumerWidget {
       ),
       bottomNavigationBar: !context.showRail
           ? CustomNavBar(
-              selectedIndex: selectedIndex,
-              onDestinationSelected: (i) => onDestinationSelected(i, ref),
+              selectedIndex: selectedIndex.value,
+              onDestinationSelected: (i) => selectedIndex.value = i,
             )
           : null,
     );
   }
-
-  void onDestinationSelected(int i, WidgetRef ref) {
-    ref.read(responsiveIndexProvider.notifier).index = i;
-  }
 }
-
-
-
 
 // class HomeView extends StatelessWidget {
 //   const HomeView({super.key});

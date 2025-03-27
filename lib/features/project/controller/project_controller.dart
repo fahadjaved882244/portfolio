@@ -2,7 +2,9 @@
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/features/project/model/project_model.dart';
+import 'package:portfolio/features/project/repository/mock_project_repository.dart';
 
-final projectControllerProvider = Provider<List<Project>>((ref) {
-  return jsonProjects.map((e) => Project.fromMap(e)).toList();
+final projectControllerProvider = FutureProvider<List<Project>>((ref) {
+  final repository = ref.watch(projectRepositoryProvider);
+  return repository.fetchProjects();
 });

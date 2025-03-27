@@ -9,6 +9,8 @@ class ProjectDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const snackBar = SnackBar(content: Text("Requested URL not found!"));
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -58,7 +60,7 @@ class ProjectDetailView extends StatelessWidget {
 
                   // Company Name
                   Text(
-                    'Developed for: ${project.company}',
+                    project.company,
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                   const SizedBox(height: 4),
@@ -142,7 +144,10 @@ class ProjectDetailView extends StatelessWidget {
                               launchUrl(uri);
                             }
                           } catch (e) {
-                            print('Error: $e');
+                            if (context.mounted) {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+                            }
                           }
                         },
                         label: const Text('View Project'),
