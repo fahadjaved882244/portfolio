@@ -6,9 +6,9 @@ import 'package:portfolio/features/experience/view/exprience_list_view.dart';
 import 'package:portfolio/features/home/home_view.dart';
 import 'package:portfolio/features/project/view/project_list_view.dart';
 import 'package:portfolio/features/responsive/utils/media_query_extension.dart';
+import 'package:portfolio/features/responsive/view/widgets/custom_nav_menu.dart';
 
 import 'widgets/custom_nav_bar.dart';
-import 'widgets/custom_nav_rail.dart';
 import 'widgets/responsive_padding.dart';
 
 const widgets = [
@@ -41,10 +41,10 @@ class ResponsiveView extends HookConsumerWidget {
 
     return Scaffold(
       body: SafeArea(
-        child: Row(
+        child: Column(
           children: [
             if (context.showRail)
-              CustomNavRail(
+              CustomNavMenu(
                 selectedIndex: selectedIndex.value,
                 onDestinationSelected: (i) => selectedIndex.value = i,
               ),
@@ -53,7 +53,7 @@ class ResponsiveView extends HookConsumerWidget {
                 onNotification: (not) {
                   if (not is ScrollEndNotification) {
                     if (pageController.page?.toInt() != null &&
-                        selectedIndex.value != pageController.page!.toInt()) {
+                        pageController.page!.toInt() != selectedIndex.value) {
                       selectedIndex.value = pageController.page!.toInt();
                     }
                   }

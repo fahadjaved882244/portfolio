@@ -6,13 +6,11 @@ import 'package:portfolio/theme/theme_controller.dart';
 class CustomNavRail extends ConsumerWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
-  final Color? backgroundColor;
 
   const CustomNavRail({
     super.key,
     required this.selectedIndex,
     required this.onDestinationSelected,
-    this.backgroundColor,
   });
 
   @override
