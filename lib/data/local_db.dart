@@ -8,7 +8,7 @@ final sharedPreferencesProvider = Provider<SharedPreferences>((ref) {
 });
 
 final localDbProvider = Provider<LocalDb>((ref) {
-  final sharedPrefs = ref.read(sharedPreferencesProvider);
+  final sharedPrefs = ref.watch(sharedPreferencesProvider);
   return LocalDb(sharedPrefs);
 });
 
