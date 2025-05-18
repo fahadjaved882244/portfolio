@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/features/responsive/model/destination.dart';
 
 class CustomNavMenu extends StatelessWidget {
@@ -31,10 +33,11 @@ class CustomNavMenu extends StatelessWidget {
             // Navigation Menu
             Row(
               children: myDestinations
-                  .map((d) => _buildNavItem(
-                        d.label,
-                        myDestinations.indexOf(d),
-                        context,
+                  .map((d) => _MenuItem(
+                        title: d.label,
+                        index: myDestinations.indexOf(d),
+                        selectedIndex: selectedIndex,
+                        onDestinationSelected: onDestinationSelected,
                       ))
                   .toList(),
             ),
@@ -43,12 +46,33 @@ class CustomNavMenu extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _buildNavItem(String title, int index, BuildContext context) {
+class _MenuItem extends HookConsumerWidget {
+  final String title;
+  final int index;
+  final int selectedIndex;
+  final ValueChanged<int> onDestinationSelected;
+
+  const _MenuItem({
+    required this.title,
+    required this.index,
+    required this.selectedIndex,
+    required this.onDestinationSelected,
+  });
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hoveredIndex = useState(-1);
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      onEnter: (_) => print('$title hovered'), // Optional: Handle hover logic
-      onExit: (_) => print('$title unhovered'), // Optional: Handle hover logic
+      onEnter: (_) {
+        hoveredIndex.value = index;
+      }, // Optional: Handle hover logic
+      onExit: (_) {
+        hoveredIndex.value = -1;
+      },
       child: GestureDetector(
         onTap: () => onDestinationSelected(index),
         child: Padding(
@@ -71,7 +95,9 @@ class CustomNavMenu extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: selectedIndex == index
                         ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.onSurface,
+                        : hoveredIndex.value == index
+                            ? Theme.of(context).colorScheme.tertiary
+                            : Theme.of(context).colorScheme.onSurface,
                     fontWeight: selectedIndex == index
                         ? FontWeight.bold
                         : FontWeight.normal,
