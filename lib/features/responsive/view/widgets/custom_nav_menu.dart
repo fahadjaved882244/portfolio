@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/features/responsive/model/destination.dart';
+import 'package:portfolio/theme/theme_controller.dart';
 
-class CustomNavMenu extends StatelessWidget {
+class CustomNavMenu extends ConsumerWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
   const CustomNavMenu({
@@ -13,7 +14,7 @@ class CustomNavMenu extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return SafeArea(
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -32,14 +33,25 @@ class CustomNavMenu extends StatelessWidget {
             ),
             // Navigation Menu
             Row(
-              children: myDestinations
-                  .map((d) => _MenuItem(
-                        title: d.label,
-                        index: myDestinations.indexOf(d),
-                        selectedIndex: selectedIndex,
-                        onDestinationSelected: onDestinationSelected,
-                      ))
-                  .toList(),
+              children: [
+                ...myDestinations.map((d) => _MenuItem(
+                      title: d.label,
+                      index: myDestinations.indexOf(d),
+                      selectedIndex: selectedIndex,
+                      onDestinationSelected: onDestinationSelected,
+                    )),
+
+                const SizedBox(width: 32),
+                // Theme Toggle Button
+                IconButton(
+                  onPressed: () {
+                    ref
+                        .read(themeControllerProvider.notifier)
+                        .toggleThemeMode();
+                  },
+                  icon: const Icon(Icons.wb_sunny_outlined),
+                ),
+              ],
             ),
           ],
         ),
