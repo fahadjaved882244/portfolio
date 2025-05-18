@@ -16,7 +16,7 @@ class ExperienceListView extends ConsumerWidget {
         child: Column(
           children: [
             const SizedBox(height: 48),
-        
+
             // Name
             Text(
               AppStrings.experienceTitle,
@@ -25,7 +25,7 @@ class ExperienceListView extends ConsumerWidget {
                   ),
             ),
             const SizedBox(height: 8),
-        
+
             // Expertise
             Text(
               AppStrings.experienceTags,
@@ -35,25 +35,18 @@ class ExperienceListView extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-        
+
             Text(
               AppStrings.experienceSummary,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-        
-            ConstrainedBox(
-              constraints: const BoxConstraints(
-                maxWidth: 480,
-              ),
-              child: Column(
-                children: ListTile.divideTiles(
-                  context: context,
-                  tiles: experiences.map(
-                    (e) => ExperienceCard(experience: e),
-                  ),
-                ).toList(),
+
+            ...ListTile.divideTiles(
+              context: context,
+              tiles: experiences.map(
+                (e) => ExperienceCard(experience: e),
               ),
             ),
           ],
