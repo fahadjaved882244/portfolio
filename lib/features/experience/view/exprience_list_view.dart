@@ -12,50 +12,45 @@ class ExperienceListView extends ConsumerWidget {
     final experiences = ref.watch(experienceControllerProvider);
 
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(height: 48),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(height: 48),
 
-          // Name
-          Text(
-            AppStrings.experienceTitle,
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
-          ),
-          const SizedBox(height: 8),
-
-          // Expertise
-          Text(
-            AppStrings.experienceTags,
-            style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: Colors.grey[600],
-                ),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-
-          Text(
-            AppStrings.experienceSummary,
-            style: Theme.of(context).textTheme.bodyLarge,
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 24),
-
-          ConstrainedBox(
-            constraints: const BoxConstraints(
-              maxWidth: 480,
+            // Name
+            Text(
+              AppStrings.experienceTitle,
+              style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
             ),
-            child: Column(
-              children: ListTile.divideTiles(
-                context: context,
-                tiles: experiences.map(
-                  (e) => ExperienceCard(experience: e),
-                ),
-              ).toList(),
+            const SizedBox(height: 8),
+
+            // Expertise
+            Text(
+              AppStrings.experienceTags,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Colors.grey[600],
+                  ),
+              textAlign: TextAlign.center,
             ),
-          ),
-        ],
+            const SizedBox(height: 24),
+
+            Text(
+              AppStrings.experienceSummary,
+              style: Theme.of(context).textTheme.bodyLarge,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+
+            ...ListTile.divideTiles(
+              context: context,
+              tiles: experiences.map(
+                (e) => ExperienceCard(experience: e),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
