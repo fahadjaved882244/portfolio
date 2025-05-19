@@ -34,8 +34,6 @@ class ThemeController extends StateNotifier<ThemeMode> {
         return Brightness.dark;
       case ThemeMode.light:
         return Brightness.light;
-      default:
-        return Brightness.dark;
     }
   }
 }

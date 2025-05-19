@@ -26,7 +26,7 @@ class CustomNavMenu extends ConsumerWidget {
           children: [
             // Logo
             Text(
-              'MyWebsite',
+              'Portfolio',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
