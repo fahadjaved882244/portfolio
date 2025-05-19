@@ -7,7 +7,7 @@ class Destination {
 }
 
 const List<Destination> myDestinations = <Destination>[
-  Destination(Icons.account_circle_outlined, 'Profile'),
+  Destination(Icons.account_circle_outlined, 'Home'),
   Destination(Icons.code, 'Projects'),
   Destination(Icons.timeline, 'Experience'),
   Destination(Icons.email_outlined, 'Contact'),

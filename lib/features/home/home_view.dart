@@ -22,7 +22,7 @@ class HomeView extends ConsumerWidget {
               ), // Replace with your profile image path
             ),
             const SizedBox(height: 24),
-        
+
             // Name
             Text(
               AppStrings.myName,
@@ -31,7 +31,7 @@ class HomeView extends ConsumerWidget {
                   ),
             ),
             const SizedBox(height: 8),
-        
+
             // Expertise
             Text(
               AppStrings.myTags,
@@ -41,7 +41,7 @@ class HomeView extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-        
+
             // Introduction
             Text(
               AppStrings.mySummary,
@@ -49,12 +49,13 @@ class HomeView extends ConsumerWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 24),
-        
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 "flutter_logo.png",
                 "firebase_logo.png",
+                "c_sharp_logo.png",
                 "azure_logo.png",
                 "python_logo.png"
               ]
@@ -69,7 +70,7 @@ class HomeView extends ConsumerWidget {
                   .toList(),
             ),
             const SizedBox(height: 32),
-        
+
             const SkillsTable(),
           ],
         ),

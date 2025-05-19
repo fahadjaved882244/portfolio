@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/features/responsive/model/destination.dart';
+import 'package:portfolio/theme/theme_controller.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends ConsumerWidget {
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
 
@@ -11,14 +13,20 @@ class CustomDrawer extends StatelessWidget {
     required this.onDestinationSelected,
   });
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return NavigationDrawer(
       selectedIndex: selectedIndex,
-      onDestinationSelected: onDestinationSelected,
+      onDestinationSelected: (i) {
+        onDestinationSelected(i);
+        // close the drawer if open
+        if (Scaffold.of(context).isDrawerOpen) {
+          Scaffold.of(context).closeDrawer();
+        }
+      },
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.fromLTRB(28, 16, 16, 10),
-          child: Text('Header', style: Theme.of(context).textTheme.titleSmall),
+        const Padding(
+          padding: EdgeInsets.fromLTRB(28, 16, 16, 10),
+          child: SizedBox(),
         ),
         ...myDestinations.map((destination) {
           return NavigationDrawerDestination(
@@ -27,8 +35,24 @@ class CustomDrawer extends StatelessWidget {
           );
         }),
         const Padding(
-          padding: EdgeInsets.fromLTRB(28, 16, 28, 10),
+          padding: EdgeInsets.fromLTRB(28, 8, 28, 8),
           child: Divider(),
+        ),
+        // toggle theme button
+        ListTile(
+          contentPadding: const EdgeInsets.symmetric(horizontal: 28),
+          leading: const Icon(Icons.wb_sunny_outlined),
+          title: const Text('Dark Mode'),
+          trailing: Switch(
+            value: ref.watch(themeControllerProvider.notifier).themeMode ==
+                ThemeMode.dark,
+            onChanged: (value) {
+              // Handle theme toggle
+            },
+          ),
+          onTap: () {
+            ref.read(themeControllerProvider.notifier).toggleThemeMode();
+          },
         ),
       ],
     );
