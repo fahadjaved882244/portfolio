@@ -86,7 +86,7 @@ const _jsonProjects = [
   },
   {
     "name": "Food Delivery",
-    "company": "Ng Solutions",
+    "company": "Next Generation",
     "description":
         "Halal Finder is a mobile application designed to help Muslims in the UK, easily search and order halal food and meat from nearby vendors. The app also integrates an online marketplace for religious products, making it a one-stop solution for halal needs. Additionally, it features a barcode scanning tool that allows users to scan product labels and instantly determine whether an item is halal or not.",
     "imageUrl": "assets/halal_finder/thumbnail.png",
