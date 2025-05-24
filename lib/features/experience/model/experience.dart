@@ -98,34 +98,3 @@ class Experience {
         endDate.hashCode;
   }
 }
-
-final exprienceJson = [
-  {
-    'jobTitle': 'Lead Mobile Application Developer',
-    'companyName': 'Exacology',
-    'companyLocation': 'Delawre, USA',
-    'companyLogo': 'exacology_logo.jpeg',
-    'companyWebsite': 'https://www.linkedin.com/company/exacology/',
-    'startDate': 'Mar 2023',
-    'endDate': 'Present',
-  },
-  {
-    'jobTitle': 'Flutter Developer',
-    'companyName': 'Next Generation Technology Solutions',
-    'companyLocation': 'Bridgewater, UK',
-    'companyLogo': 'assets/ng_tech_logo.jpeg',
-    'companyWebsite':
-        'https://www.linkedin.com/company/next-generation-technology-solutions/',
-    'startDate': 'Jan 2021',
-    'endDate': 'Feb 2023',
-  },
-  {
-    'jobTitle': 'C++ Developer',
-    'companyName': 'FreeLancer',
-    'companyLocation': 'Remote',
-    'companyLogo': 'assets/freelancer_logo.webp',
-    'companyWebsite': 'https://sasystems.solutions/',
-    'startDate': 'Aug 2019',
-    'endDate': 'Dec 2020',
-  },
-];

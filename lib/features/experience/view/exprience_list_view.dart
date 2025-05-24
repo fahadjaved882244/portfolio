@@ -43,11 +43,30 @@ class ExperienceListView extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
 
-            ...ListTile.divideTiles(
-              context: context,
-              tiles: experiences.map(
-                (e) => ExperienceCard(experience: e),
+            experiences.when(
+              loading: () => const CircularProgressIndicator(),
+              error: (error, stackTrace) => Text(
+                'Error: $error',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Colors.red,
+                    ),
               ),
+              data: (d) => d.isEmpty
+                  ? Text(
+                      AppStrings.experienceEmptyMessage,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                            color: Colors.grey[600],
+                          ),
+                    )
+                  : Column(
+                      children: ListTile.divideTiles(
+                        context: context,
+                        tiles: d.map(
+                          (e) => ExperienceCard(experience: e),
+                        ),
+                      ).toList(),
+                    ),
             ),
           ],
         ),
