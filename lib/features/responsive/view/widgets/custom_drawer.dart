@@ -48,6 +48,7 @@ class CustomDrawer extends ConsumerWidget {
                 ThemeMode.dark,
             onChanged: (value) {
               // Handle theme toggle
+              ref.read(themeControllerProvider.notifier).toggleThemeMode();
             },
           ),
           onTap: () {
