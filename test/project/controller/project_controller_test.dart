@@ -4,12 +4,15 @@ import 'package:portfolio/features/project/controller/project_controller.dart';
 import 'package:portfolio/features/project/model/project_model.dart';
 import 'package:portfolio/features/project/repository/local_project_repository.dart';
 
+import '../../../testing/mocks/mock_project_repository.dart';
+import '../../../testing/models/mock_project.dart';
+
 void main() {
   late ProviderContainer container;
-  late LocalProjectRepository mockRepository;
+  late MockProjectRepository mockRepository;
 
   setUp(() {
-    mockRepository = LocalProjectRepository();
+    mockRepository = MockProjectRepository();
     container = ProviderContainer(
       overrides: [
         projectRepositoryProvider.overrideWithValue(mockRepository),
@@ -25,20 +28,8 @@ void main() {
     test('should return a list of projects when fetchProjects succeeds',
         () async {
       // Arrange
-      final mockProjects = [
-        Project(
-          name: 'Test Project',
-          company: 'Test Company',
-          description: 'This is a test project.',
-          imageUrl: 'https://example.com/image.png',
-          coverUrl: 'https://example.com/cover.png',
-          downloadUrl: 'https://example.com/download',
-          contributions: ['Contribution 1', 'Contribution 2'],
-          challenges: ['Challenge 1', 'Challenge 2'],
-          tools: ['Tool 1', 'Tool 2'],
-        ),
-      ];
-      mockRepository.fetchProjects = () async => mockProjects;
+      final mockProjects = [kProject];
+      mockRepository.fetchProjectsCallback = () async => mockProjects;
 
       // Act
       final result = await container.read(projectControllerProvider.future);
@@ -50,7 +41,7 @@ void main() {
 
     test('should handle empty project list gracefully', () async {
       // Arrange
-      mockRepository.fetchProjects = () async => [];
+      mockRepository.fetchProjectsCallback = () async => [];
 
       // Act
       final result = await container.read(projectControllerProvider.future);
@@ -61,7 +52,7 @@ void main() {
 
     test('should throw an exception when fetchProjects fails', () async {
       // Arrange
-      mockRepository.fetchProjects = () async {
+      mockRepository.fetchProjectsCallback = () async {
         throw Exception('Failed to fetch projects');
       };
 
@@ -74,40 +65,18 @@ void main() {
 
     test('should update state when new data is fetched', () async {
       // Arrange
-      final initialProjects = [
-        Project(
-          name: 'Initial Project',
-          company: 'Initial Company',
-          description: 'This is the initial project.',
-          imageUrl: 'https://example.com/image1.png',
-          coverUrl: 'https://example.com/cover1.png',
-          downloadUrl: 'https://example.com/download1',
-          contributions: ['Contribution 1'],
-          challenges: ['Challenge 1'],
-          tools: ['Tool 1'],
-        ),
-      ];
+      final initialProjects = [kProject];
       final updatedProjects = [
-        Project(
-          name: 'Updated Project',
-          company: 'Updated Company',
-          description: 'This is the updated project.',
-          imageUrl: 'https://example.com/image2.png',
-          coverUrl: 'https://example.com/cover2.png',
-          downloadUrl: 'https://example.com/download2',
-          contributions: ['Contribution 2'],
-          challenges: ['Challenge 2'],
-          tools: ['Tool 2'],
-        ),
+        kProject.copyWith(name: 'Updated Project', company: 'Updated Company')
       ];
-      mockRepository.fetchProjects = () async => initialProjects;
+      mockRepository.fetchProjectsCallback = () async => initialProjects;
 
       // Act
       final initialResult =
           await container.read(projectControllerProvider.future);
       expect(initialResult, initialProjects);
 
-      mockRepository.fetchProjects = () async => updatedProjects;
+      mockRepository.fetchProjectsCallback = () async => updatedProjects;
       container.refresh(projectControllerProvider);
       final updatedResult =
           await container.read(projectControllerProvider.future);
