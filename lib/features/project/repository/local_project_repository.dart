@@ -3,17 +3,13 @@ import 'package:portfolio/features/project/model/project_model.dart';
 import 'package:portfolio/features/project/repository/i_project_repository.dart';
 
 final projectRepositoryProvider =
-    Provider<IProjectRepository>((ref) => MockProjectRepository());
+    Provider<IProjectRepository>((ref) => LocalProjectRepository());
 
-class MockProjectRepository implements IProjectRepository {
+class LocalProjectRepository implements IProjectRepository {
   @override
   Future<List<Project>> fetchProjects() {
-    try {
-      final projectList = _jsonProjects.map((e) => Project.fromMap(e)).toList();
-      return Future.value(projectList);
-    } catch (e) {
-      rethrow;
-    }
+    final projectList = _jsonProjects.map((e) => Project.fromMap(e)).toList();
+    return Future.value(projectList);
   }
 }
 

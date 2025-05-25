@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:portfolio/core/app_error.dart';
 
+@immutable
 class Project {
   final String name;
   final String company;
@@ -12,7 +13,7 @@ class Project {
   final List<String> challenges;
   final List<String> tools;
 
-  Project({
+  const Project({
     required this.name,
     required this.company,
     required this.description,
@@ -63,6 +64,41 @@ class Project {
   }
 
   factory Project.fromMap(Map<String, dynamic> map) {
+    if (!map.containsKey('name') ||
+        !map.containsKey('company') ||
+        !map.containsKey('description') ||
+        !map.containsKey('imageUrl') ||
+        !map.containsKey('coverUrl') ||
+        !map.containsKey('downloadUrl') ||
+        !map.containsKey('contributions') ||
+        !map.containsKey('challenges') ||
+        !map.containsKey('tools')) {
+      throw NotFoundError(
+        'Map is missing required keys',
+        stackTrace: StackTrace.current,
+      );
+    }
+    if (map['name'] is! String ||
+        map['company'] is! String ||
+        map['description'] is! String ||
+        map['imageUrl'] is! String? ||
+        map['coverUrl'] is! String? ||
+        map['downloadUrl'] is! String) {
+      throw NotFoundError(
+        'Name, company, description, imageUrl, coverUrl, and downloadUrl must be strings',
+        stackTrace: StackTrace.current,
+      );
+    }
+
+    if (map['contributions'] is! List<String> ||
+        map['challenges'] is! List<String> ||
+        map['tools'] is! List<String>) {
+      throw NotFoundError(
+        'Contributions, challenges, and tools must be lists of strings',
+        stackTrace: StackTrace.current,
+      );
+    }
+
     return Project(
       name: map['name'],
       company: map['company'],
@@ -75,11 +111,6 @@ class Project {
       tools: List<String>.from(map['tools']),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Project.fromJson(String source) =>
-      Project.fromMap(json.decode(source));
 
   @override
   String toString() {

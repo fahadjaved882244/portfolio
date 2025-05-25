@@ -1,6 +1,6 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class Experience {
   final String jobTitle;
   final String companyName;
@@ -10,7 +10,7 @@ class Experience {
   final String startDate;
   final String endDate;
 
-  Experience({
+  const Experience({
     required this.jobTitle,
     required this.companyName,
     required this.companyLocation,
@@ -53,21 +53,38 @@ class Experience {
   }
 
   factory Experience.fromMap(Map<String, dynamic> map) {
+    if (map.isEmpty) {
+      throw ArgumentError('Map cannot be empty');
+    }
+    if (!map.containsKey('jobTitle') ||
+        !map.containsKey('companyName') ||
+        !map.containsKey('companyLocation') ||
+        !map.containsKey('companyLogo') ||
+        !map.containsKey('companyWebsite') ||
+        !map.containsKey('startDate') ||
+        !map.containsKey('endDate')) {
+      throw ArgumentError('Map is missing required keys');
+    }
+
+    if (map['jobTitle'] is! String ||
+        map['companyName'] is! String ||
+        map['companyLocation'] is! String ||
+        map['companyLogo'] is! String ||
+        map['companyWebsite'] is! String ||
+        map['startDate'] is! String ||
+        map['endDate'] is! String) {
+      throw ArgumentError('Map contains invalid types for required keys');
+    }
     return Experience(
-      jobTitle: map['jobTitle'] as String,
-      companyName: map['companyName'] as String,
-      companyLocation: map['companyLocation'] as String,
-      companyLogo: map['companyLogo'] as String,
-      companyWebsite: map['companyWebsite'] as String,
-      startDate: map['startDate'] as String,
-      endDate: map['endDate'] as String,
+      jobTitle: map['jobTitle'],
+      companyName: map['companyName'],
+      companyLocation: map['companyLocation'],
+      companyLogo: map['companyLogo'],
+      companyWebsite: map['companyWebsite'],
+      startDate: map['startDate'],
+      endDate: map['endDate'],
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Experience.fromJson(String source) =>
-      Experience.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   String toString() {
