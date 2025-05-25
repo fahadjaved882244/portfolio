@@ -78,14 +78,21 @@ class Project {
         stackTrace: StackTrace.current,
       );
     }
-    if (map['name'] is! String ||
-        map['company'] is! String ||
-        map['description'] is! String ||
-        map['imageUrl'] is! String? ||
-        map['coverUrl'] is! String? ||
-        map['downloadUrl'] is! String) {
+    if (map['name'].isEmpty ||
+        map['company'].isEmpty ||
+        map['description'].isEmpty) {
       throw NotFoundError(
         'Name, company, description, imageUrl, coverUrl, and downloadUrl must be strings',
+        stackTrace: StackTrace.current,
+      );
+    }
+
+    // validete urls
+    if (Uri.tryParse(map['imageUrl']) == null ||
+        Uri.tryParse(map['coverUrl']) == null ||
+        Uri.tryParse(map['downloadUrl']) == null) {
+      throw NotFoundError(
+        'ImageUrl, coverUrl, and downloadUrl must be valid URLs',
         stackTrace: StackTrace.current,
       );
     }
