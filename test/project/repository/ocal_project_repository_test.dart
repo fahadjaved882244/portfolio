@@ -2,22 +2,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:portfolio/features/project/model/project_model.dart';
 import 'package:portfolio/features/project/repository/local_project_repository.dart';
 
+import '../../../testing/mocks/mock_local_db.dart';
+
 void main() {
   late LocalProjectRepository repository;
+  late MockLocalDb mockLocalDb;
 
   setUp(() {
-    repository = LocalProjectRepository();
+    mockLocalDb = MockLocalDb();
+    repository = LocalProjectRepository(mockLocalDb);
   });
 
   group('LocalProjectRepository', () {
-    test('fetchProjects should return a non-empty list of projects', () async {
-      // Act
-      final projects = await repository.fetchProjects();
-
-      // Assert
-      expect(projects, isNotEmpty);
-    });
-
     test('fetchProjects should return a list of Project objects', () async {
       // Act
       final projects = await repository.fetchProjects();
@@ -45,8 +41,7 @@ void main() {
       }
     });
 
-    // test the imageUrl and coverUrl fields are a valid URL
-    test('fetchProjects should have valid imageUrl, coverUrl and downloadUrl',
+    test('fetchProjects should have valid imageUrl, coverUrl, and downloadUrl',
         () async {
       // Act
       final projects = await repository.fetchProjects();
@@ -59,46 +54,27 @@ void main() {
       }
     });
 
-    // test('fetchProjects should handle empty JSON data gracefully', () async {
-    //   // Arrange
-    //   const emptyJsonProjects = <Map<String, dynamic>>[];
-    //   final repository = LocalProjectRepository();
-    //   final originalJsonProjects = _jsonProjects; // Save original data
-    //   _jsonProjects.clear(); // Temporarily clear the data
+    test('fetchProjects should handle empty JSON data gracefully', () async {
+      // Arrange
+      mockLocalDb.getProjectsCallback = () => [];
 
-    //   // Act
-    //   final projects = await repository.fetchProjects();
+      // Act
+      final projects = await repository.fetchProjects();
 
-    //   // Assert
-    //   expect(projects, isEmpty);
+      // Assert
+      expect(projects, isEmpty);
+    });
 
-    //   // Restore original data
-    //   _jsonProjects.addAll(originalJsonProjects);
-    // });
+    test('fetchProjects should throw an exception for malformed data',
+        () async {
+      // Arrange
+      mockLocalDb.getProjectsCallback = () => [
+            {"name": "Invalid Project"} // Missing required fields
+          ];
 
-    // test('fetchProjects should handle malformed JSON data gracefully',
-    //     () async {
-    //   // Arrange
-    //   const malformedJsonProjects = [
-    //     {"name": "Invalid Project"} // Missing required fields
-    //   ];
-    //   final repository = LocalProjectRepository();
-    //   final originalJsonProjects = _jsonProjects; // Save original data
-    //   _jsonProjects.clear(); // Temporarily clear the data
-    //   _jsonProjects.addAll(malformedJsonProjects);
-
-    //   // Act
-    //   try {
-    //     await repository.fetchProjects();
-    //     fail('fetchProjects should throw an exception for malformed data');
-    //   } catch (e) {
-    //     // Assert
-    //     expect(e, isA<Exception>());
-    //   } finally {
-    //     // Restore original data
-    //     _jsonProjects.clear();
-    //     _jsonProjects.addAll(originalJsonProjects);
-    //   }
-    // });
+      // Act & Assert
+      expect(() async => await repository.fetchProjects(),
+          throwsA(isA<Exception>()));
+    });
   });
 }

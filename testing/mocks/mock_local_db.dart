@@ -1,22 +1,33 @@
-import 'dart:ui';
-
 import 'package:portfolio/data/local_db.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class MockLocalDb implements LocalDb {
+class MockLocalDb extends LocalDb {
+  MockLocalDb() : super(MockSharedPreferences());
+
+  List<Map<String, dynamic>> Function()? getProjectsCallback;
+
   @override
   List<Map<String, dynamic>> getProjects() {
-    return [];
+    if (getProjectsCallback != null) {
+      return getProjectsCallback!();
+    }
+    return [
+      {
+        'name': 'Mock Project',
+        'company': 'Mock Company',
+        'description': 'This is a mock project description.',
+        'imageUrl': 'https://example.com/mock_image.png',
+        'coverUrl': 'https://example.com/mock_cover.png',
+        'downloadUrl': 'https://example.com/mock_download.zip',
+        'contributions': ['Mock Contribution 1', 'Mock Contribution 2'],
+        'challenges': ['Mock Challenge 1', 'Mock Challenge 2'],
+        'tools': ['Tool 1', 'Tool 2'],
+      }
+    ];
   }
+}
 
+class MockSharedPreferences implements SharedPreferences {
   @override
-  bool get darkMode => false;
-
-  @override
-  set darkMode(bool value) {}
-
-  @override
-  Locale get locale => const Locale('en', 'US');
-
-  @override
-  set locale(Locale value) {}
+  noSuchMethod(Invocation invocation) => super.noSuchMethod(invocation);
 }

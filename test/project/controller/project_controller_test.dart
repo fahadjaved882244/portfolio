@@ -9,13 +9,13 @@ import '../../../testing/models/mock_project.dart';
 
 void main() {
   late ProviderContainer container;
-  late MockProjectRepository mockRepository;
+  late MockProjectRepository projectRepository;
 
   setUp(() {
-    mockRepository = MockProjectRepository();
+    projectRepository = MockProjectRepository();
     container = ProviderContainer(
       overrides: [
-        projectRepositoryProvider.overrideWithValue(mockRepository),
+        projectRepositoryProvider.overrideWithValue(projectRepository),
       ],
     );
   });
@@ -29,7 +29,7 @@ void main() {
         () async {
       // Arrange
       final mockProjects = [kProject];
-      mockRepository.fetchProjectsCallback = () async => mockProjects;
+      projectRepository.fetchProjectsCallback = () async => mockProjects;
 
       // Act
       final result = await container.read(projectControllerProvider.future);
@@ -41,7 +41,7 @@ void main() {
 
     test('should handle empty project list gracefully', () async {
       // Arrange
-      mockRepository.fetchProjectsCallback = () async => [];
+      projectRepository.fetchProjectsCallback = () async => [];
 
       // Act
       final result = await container.read(projectControllerProvider.future);
@@ -52,7 +52,7 @@ void main() {
 
     test('should throw an exception when fetchProjects fails', () async {
       // Arrange
-      mockRepository.fetchProjectsCallback = () async {
+      projectRepository.fetchProjectsCallback = () async {
         throw Exception('Failed to fetch projects');
       };
 
@@ -69,14 +69,14 @@ void main() {
       final updatedProjects = [
         kProject.copyWith(name: 'Updated Project', company: 'Updated Company')
       ];
-      mockRepository.fetchProjectsCallback = () async => initialProjects;
+      projectRepository.fetchProjectsCallback = () async => initialProjects;
 
       // Act
       final initialResult =
           await container.read(projectControllerProvider.future);
       expect(initialResult, initialProjects);
 
-      mockRepository.fetchProjectsCallback = () async => updatedProjects;
+      projectRepository.fetchProjectsCallback = () async => updatedProjects;
       container.refresh(projectControllerProvider);
       final updatedResult =
           await container.read(projectControllerProvider.future);
