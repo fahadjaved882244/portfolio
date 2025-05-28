@@ -42,10 +42,10 @@ class ProjectListView extends ConsumerWidget {
   }
 
   Widget buildBody(AsyncValue<List<Project>> asyncValue) {
-    return asyncValue.when<Widget>(
+    return asyncValue.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (message, __) => const Center(
-        child: Text("Unexpected Error! Please try agin later."),
+        child: Text("Unexpected Error! Please try again later."),
       ),
       data: (projects) => GridView.builder(
         padding: const EdgeInsets.only(left: 4, right: 4, bottom: 16),

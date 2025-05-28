@@ -82,7 +82,7 @@ class Project {
         map['company'].isEmpty ||
         map['description'].isEmpty) {
       throw NotFoundError(
-        'Name, company, description, imageUrl, coverUrl, and downloadUrl must be strings',
+        'Name, company, and description cannot be empty',
         stackTrace: StackTrace.current,
       );
     }
@@ -110,8 +110,8 @@ class Project {
       name: map['name'],
       company: map['company'],
       description: map['description'],
-      imageUrl: map['imageUrl'] ?? "https://via.placeholder.com/800x400",
-      coverUrl: map['coverUrl'] ?? "https://via.placeholder.com/800x400",
+      imageUrl: map['imageUrl'],
+      coverUrl: map['coverUrl'],
       downloadUrl: map['downloadUrl'],
       contributions: List<String>.from(map['contributions']),
       challenges: List<String>.from(map['challenges']),

@@ -100,28 +100,6 @@ void main() {
       expect(() => Project.fromMap(map), throwsA(isA<NotFoundError>()));
     });
 
-    test('fromMap should handle missing optional fields gracefully', () {
-      // Arrange
-      final map = {
-        'name': 'Test Project',
-        'company': 'Test Company',
-        'description': 'This is a test project.',
-        'imageUrl': null,
-        'coverUrl': null,
-        'downloadUrl': 'https://example.com/download',
-        'contributions': ['Contribution 1', 'Contribution 2'],
-        'challenges': ['Challenge 1', 'Challenge 2'],
-        'tools': ['Tool 1', 'Tool 2'],
-      };
-
-      // Act
-      final result = Project.fromMap(map);
-
-      // Assert
-      expect(result.imageUrl, 'https://via.placeholder.com/800x400');
-      expect(result.coverUrl, 'https://via.placeholder.com/800x400');
-    });
-
     test('copyWith should create a new Project with updated fields', () {
       // Act
       final updatedProject = project.copyWith(
