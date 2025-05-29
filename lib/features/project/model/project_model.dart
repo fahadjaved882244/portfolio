@@ -1,6 +1,7 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
+import 'package:flutter/foundation.dart';
+import 'package:portfolio/core/app_error.dart';
 
+@immutable
 class Project {
   final String name;
   final String company;
@@ -12,7 +13,7 @@ class Project {
   final List<String> challenges;
   final List<String> tools;
 
-  Project({
+  const Project({
     required this.name,
     required this.company,
     required this.description,
@@ -63,23 +64,60 @@ class Project {
   }
 
   factory Project.fromMap(Map<String, dynamic> map) {
+    if (!map.containsKey('name') ||
+        !map.containsKey('company') ||
+        !map.containsKey('description') ||
+        !map.containsKey('imageUrl') ||
+        !map.containsKey('coverUrl') ||
+        !map.containsKey('downloadUrl') ||
+        !map.containsKey('contributions') ||
+        !map.containsKey('challenges') ||
+        !map.containsKey('tools')) {
+      throw NotFoundError(
+        'Map is missing required keys',
+        stackTrace: StackTrace.current,
+      );
+    }
+    if (map['name'].isEmpty ||
+        map['company'].isEmpty ||
+        map['description'].isEmpty) {
+      throw NotFoundError(
+        'Name, company, and description cannot be empty',
+        stackTrace: StackTrace.current,
+      );
+    }
+
+    // validete urls
+    if (Uri.tryParse(map['imageUrl']) == null ||
+        Uri.tryParse(map['coverUrl']) == null ||
+        Uri.tryParse(map['downloadUrl']) == null) {
+      throw NotFoundError(
+        'ImageUrl, coverUrl, and downloadUrl must be valid URLs',
+        stackTrace: StackTrace.current,
+      );
+    }
+
+    if (map['contributions'] is! List<String> ||
+        map['challenges'] is! List<String> ||
+        map['tools'] is! List<String>) {
+      throw NotFoundError(
+        'Contributions, challenges, and tools must be lists of strings',
+        stackTrace: StackTrace.current,
+      );
+    }
+
     return Project(
       name: map['name'],
       company: map['company'],
       description: map['description'],
-      imageUrl: map['imageUrl'] ?? "https://via.placeholder.com/800x400",
-      coverUrl: map['coverUrl'] ?? "https://via.placeholder.com/800x400",
+      imageUrl: map['imageUrl'],
+      coverUrl: map['coverUrl'],
       downloadUrl: map['downloadUrl'],
       contributions: List<String>.from(map['contributions']),
       challenges: List<String>.from(map['challenges']),
       tools: List<String>.from(map['tools']),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Project.fromJson(String source) =>
-      Project.fromMap(json.decode(source));
 
   @override
   String toString() {
