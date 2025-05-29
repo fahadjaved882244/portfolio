@@ -34,9 +34,10 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   hooks_riverpod: ^2.6.1
-  flutter_hooks:
-  shared_preferences: ^2.5.2
+  flutter_hooks: ^0.21.2
+  shared_preferences: ^2.5.3
   url_launcher: ^6.3.1
+  firebase_core: ^3.13.1
 
 dev_dependencies:
   flutter_test:
@@ -47,8 +48,8 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^4.0.0
-  riverpod_lint: ^2.6.3
+  flutter_lints: ^6.0.0
+  riverpod_lint: ^2.6.5
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
