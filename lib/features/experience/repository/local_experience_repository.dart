@@ -14,7 +14,7 @@ class LocalExperienceRepository implements IExperienceRepository {
         'jobTitle': 'Lead Mobile Application Developer',
         'companyName': 'Exacology',
         'companyLocation': 'Delawre, USA',
-        'companyLogo': 'exacology_logo.jpeg',
+        'companyLogo': 'assets/exacology_logo.jpeg',
         'companyWebsite': 'https://www.linkedin.com/company/exacology/',
         'startDate': 'Mar 2023',
         'endDate': 'Present',

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:portfolio/core/app_strings.dart';
-import 'package:portfolio/features/home/widgets/skills_table.dart';
 
 class HomeView extends ConsumerWidget {
   const HomeView({super.key});
@@ -71,7 +70,7 @@ class HomeView extends ConsumerWidget {
             ),
             const SizedBox(height: 32),
 
-            const SkillsTable(),
+            // const SkillsTable(),
           ],
         ),
       ),
